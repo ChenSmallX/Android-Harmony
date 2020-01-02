@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Android-Harmony</string>
+
+    <string name="tab_home_text">主页</string>
+    <string name="tab_me_text">我的</string>
+
+
+</resources>
