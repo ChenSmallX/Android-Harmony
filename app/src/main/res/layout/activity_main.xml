@@ -22,11 +22,9 @@
         android:background="@color/colorPrimary"
         app:tabIndicatorColor="@color/white"
         app:tabIndicatorHeight="2dp"
-        app:tabTextColor="@color/colorPrimary"
+        app:tabTextColor="@android:color/darker_gray"
         app:tabSelectedTextColor="@color/white"
-        app:tabMode="fixed"
-        app:tabBackground="@drawable/abc_vector_test"/>
-
+        app:tabMode="fixed"/>
 
 
 </LinearLayout>

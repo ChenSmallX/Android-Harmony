@@ -41,12 +41,16 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
+        home_tab = tabLayout.getTabAt(0);
+        me_tab = tabLayout.getTabAt(1);
+
         // set the tab bar items' text
-//        home_tab.setText(R.string.tab_home_text);
-//        me_tab.setText(R.string.tab_me_text);
+        home_tab.setText(R.string.tab_home_text);
+        me_tab.setText(R.string.tab_me_text);
 
         // set the tab items' icon
-        //home_tab.setIcon()
+        home_tab.setIcon(R.mipmap.ic_launcher_round);
+        me_tab.setIcon(R.mipmap.ic_launcher_round);
 
     }
 }

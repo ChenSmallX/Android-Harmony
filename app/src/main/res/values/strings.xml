@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Android-Harmony</string>
+    <string name="app_name_short">And-Har</string>
 
     <string name="tab_home_text">主页</string>
     <string name="tab_me_text">我的</string>
 
+    <string name="page_me_title">心愿单</string>
+
+    <string name="game_item_name_chinese">游戏</string>
+    <string name="game_item_name_english">Game</string>
+    <string name="game_item_price_ori">10</string>
+    <string name="game_item_price_curr">7</string>
+    <string name="game_item_price_coin">CNY</string>
 
 </resources>
