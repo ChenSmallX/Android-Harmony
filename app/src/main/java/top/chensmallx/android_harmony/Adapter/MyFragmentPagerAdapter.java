@@ -1,8 +1,11 @@
-package top.chensmallx.android_harmony;
+package top.chensmallx.android_harmony.Adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import top.chensmallx.android_harmony.FragmentHome;
+import top.chensmallx.android_harmony.FragmentMe;
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 

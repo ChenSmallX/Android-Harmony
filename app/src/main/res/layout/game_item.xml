@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:id="@+id/game_item"
+<androidx.cardview.widget.CardView android:id="@+id/game_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@android:color/darker_gray"
+    app:cardElevation="10dp"
+    android:foreground="?attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,13 +16,16 @@
         android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:gravity="left">
+        android:gravity="left"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/game_item_cover"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@mipmap/ic_launcher"/>
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:adjustViewBounds="false"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/game_cover"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="25dp"
                 android:textColor="@color/colorPrimary"
+                android:maxLines="1"
                 android:text="@string/game_item_name_chinese"/>
 
             <TextView
@@ -41,9 +48,48 @@
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
                 android:textColor="@color/colorPrimaryDark"
+                android:maxLines="1"
                 android:text="@string/game_item_name_english"/>
 
-<!--            TODO: game price-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|right">
+
+                <TextView
+                    android:id="@+id/game_item_price_curr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/game_item_price_curr"
+                    android:textSize="25dp"
+                    android:textColor="@color/colorPrimary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:text="/" />
+
+                <TextView
+                    android:id="@+id/game_item_price_ori"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/game_item_price_ori"
+                    android:textColor="@android:color/darker_gray"/>
+
+                <TextView
+                    android:id="@+id/game_item_price_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/game_item_price_coin"
+                    android:textSize="25dp"/>
+
+
+            </LinearLayout>
 
 
         </LinearLayout>
