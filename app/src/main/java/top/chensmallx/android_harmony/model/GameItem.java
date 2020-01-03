@@ -1,4 +1,4 @@
-package top.chensmallx.android_harmony.Item;
+package top.chensmallx.android_harmony.model;
 
 public class GameItem {
 

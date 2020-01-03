@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
 
-import top.chensmallx.android_harmony.Adapter.MyFragmentPagerAdapter;
+import top.chensmallx.android_harmony.adapter.MyFragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

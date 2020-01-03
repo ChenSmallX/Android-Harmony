@@ -1,4 +1,4 @@
-package top.chensmallx.android_harmony.Adapter;
+package top.chensmallx.android_harmony.adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
