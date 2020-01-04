@@ -2,7 +2,6 @@ package top.chensmallx.android_harmony.service.http;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 
@@ -14,7 +13,7 @@ import top.chensmallx.android_harmony.model.GameSummary;
 
 public class GameHttpService {
 
-    private static final String DOMAIN = "http://127.0.0.1:8080";
+    private static final String DOMAIN = "http://maymomo.cn:8080";
     private OkHttpClient client;
 
     public GameHttpService() {

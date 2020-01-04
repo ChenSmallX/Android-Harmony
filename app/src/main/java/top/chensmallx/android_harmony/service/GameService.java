@@ -2,33 +2,43 @@ package top.chensmallx.android_harmony.service;
 
 import android.content.Context;
 
+import androidx.room.Room;
+
 import java.io.IOException;
 import java.util.List;
 
 import top.chensmallx.android_harmony.dao.WishDao;
-import top.chensmallx.android_harmony.db.HarmonyDBHelper;
+import top.chensmallx.android_harmony.db.HarmonyDB;
 import top.chensmallx.android_harmony.model.GameDetail;
 import top.chensmallx.android_harmony.model.GameSummary;
-import top.chensmallx.android_harmony.model.GamePrice;
 import top.chensmallx.android_harmony.service.http.GameHttpService;
 
 
 public class GameService {
 
     // 心愿单管理
-    private WishDao wishDao;
 
     // 本地数据库管理
-    private HarmonyDBHelper harmonyDBHelper;
+    private static   HarmonyDB harmonyDB;
 
     private GameHttpService gameHttpService;
 
-
+    private Context appContext;
 
     public GameService(Context context) {
-        harmonyDBHelper = new HarmonyDBHelper(context);
-        wishDao = new WishDao(harmonyDBHelper);
         gameHttpService = new GameHttpService();
+        appContext = context.getApplicationContext();
+    }
+
+
+    private HarmonyDB getHarmonyDB() {
+        synchronized (this) {
+            if (harmonyDB == null) {
+                 harmonyDB = Room.databaseBuilder(appContext,
+                        HarmonyDB.class, HarmonyDB.DB).build();
+            }
+        }
+        return harmonyDB;
     }
 
 
@@ -49,10 +59,13 @@ public class GameService {
 
     // 访问本地数据库
     public List<GameSummary> getWishGames(int offset, int len) {
-        return null;
+        WishDao wishDao = getHarmonyDB().wishDao();
+        return wishDao.getByLimit(offset, len);
     }
 
     // 访问本地数据库
-    public void addToWishList(GameSummary item) {
+    public void addToWishList(GameSummary gameSummary) {
+        WishDao wishDao = getHarmonyDB().wishDao();
+        wishDao.insertAll(gameSummary);
     }
 }

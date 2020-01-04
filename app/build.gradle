@@ -10,7 +10,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -26,9 +32,37 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.okhttp3:okhttp:4.3.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'androidx.test:core:1.2.0'
+
+    def room_version = "2.2.3"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$room_version"
+
+    // Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28'
+
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 }
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+

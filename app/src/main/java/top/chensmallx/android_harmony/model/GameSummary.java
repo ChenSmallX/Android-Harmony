@@ -1,30 +1,58 @@
 package top.chensmallx.android_harmony.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+
+
+@Entity(tableName =  "wishes")
 public class GameSummary {
     @SerializedName(value="ID")
+    @PrimaryKey
     private int id;
     @SerializedName(value="NameCN")
+    @ColumnInfo(name = "name_cn")
     private String nameCN;
     @SerializedName(value="NameEN")
+    @ColumnInfo(name = "name_en")
     private String nameEN;
     @SerializedName(value="ImgUrl")
+    @ColumnInfo(name = "img_url")
     private String imgUrl;
     @SerializedName(value="Region")
+    @ColumnInfo(name = "region")
     private String region;
     @SerializedName(value="PriceCNY")
+    @ColumnInfo(name = "price_cny")
     private String priceCNY;
     @SerializedName(value="SaleRate")
+    @ColumnInfo(name = "sale_rate")
     private String saleRate;
     @SerializedName(value="LanguageTag")
+    @Ignore
     private int[] languageTag;
+
+
+    @ColumnInfo(name = "language_tag")
+    private String languageTagString;
+
+
     @SerializedName(value="HasSolidEdition")
+    @ColumnInfo(name = "has_solid_edition")
     private boolean hasSolidEdition;
     @SerializedName(value="HasDemo")
+    @ColumnInfo(name = "has_demo")
     private boolean hasDemo;
     @SerializedName(value="IsExclusive")
+    @ColumnInfo(name = "is_exclusive")
     private boolean isExclusive;
+
 
     public GameSummary(int id, String nameCN, String nameEN, String imgUrl, String region, String priceCNY, String saleRate, int[] languageTag, boolean hasSolidEdition, boolean hasDemo, boolean isExclusive) {
         this.id = id;
@@ -38,8 +66,32 @@ public class GameSummary {
         this.hasSolidEdition = hasSolidEdition;
         this.hasDemo = hasDemo;
         this.isExclusive = isExclusive;
+        this.languageTagString = Arrays.toString(this.languageTag);
     }
 
+    public GameSummary(int id, String nameCN, String nameEN, String imgUrl, String region, String priceCNY, String saleRate, String languageTagString, boolean hasSolidEdition, boolean hasDemo, boolean isExclusive) {
+        this.id = id;
+        this.nameCN = nameCN;
+        this.nameEN = nameEN;
+        this.imgUrl = imgUrl;
+        this.region = region;
+        this.priceCNY = priceCNY;
+        this.saleRate = saleRate;
+        this.hasSolidEdition = hasSolidEdition;
+        this.hasDemo = hasDemo;
+        this.isExclusive = isExclusive;
+        this.setLanguageTagString(languageTagString);
+    }
+
+    public void setLanguageTagString(String languageTagString) {
+        this.languageTagString = languageTagString;
+        Gson gson = new Gson();
+        this.languageTag = gson.fromJson(this.languageTagString, int[].class);
+    }
+
+    public String getLanguageTagString() {
+        return languageTagString;
+    }
     public int getId() {
         return id;
     }
@@ -102,6 +154,7 @@ public class GameSummary {
 
     public void setLanguageTag(int[] languageTag) {
         this.languageTag = languageTag;
+        this.languageTagString = Arrays.toString(languageTag);
     }
 
     public boolean isHasSolidEdition() {
