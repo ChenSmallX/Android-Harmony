@@ -67,7 +67,7 @@ public class GameService {
         WishDao wishDao = getHarmonyDB().wishDao();
         List<GameSummary> gameSummaries = wishDao.getByLimit(offset, len);
         for (GameSummary g : gameSummaries) {
-            if (g.getUpdateAt() < System.currentTimeMillis() + (1000 * 60 * 24)) {
+            if (System.currentTimeMillis() >= g.getUpdateAt() + (1000 * 60 * 6)) {
                 continue;
             }
             try {
