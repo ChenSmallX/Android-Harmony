@@ -55,6 +55,7 @@ dependencies {
 
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28'
+    implementation 'org.conscrypt:conscrypt-android:2.2.1'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'

@@ -1,10 +1,12 @@
 package top.chensmallx.android_harmony.service;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.room.Room;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 import top.chensmallx.android_harmony.dao.WishDao;
@@ -19,7 +21,7 @@ public class GameService {
     // 心愿单管理
 
     // 本地数据库管理
-    private static   HarmonyDB harmonyDB;
+    private static  volatile HarmonyDB harmonyDB;
 
     private GameHttpService gameHttpService;
 
@@ -52,6 +54,9 @@ public class GameService {
         return gameHttpService.getGameDetail(id);
     }
 
+    public GameSummary getGameSummaryByID(int id) throws IOException {
+        return gameHttpService.getGameSummary(id);
+    }
     // 首页折扣游戏
     public List<GameSummary> getOffGame(int offset, int len) {
         return null;
@@ -60,12 +65,28 @@ public class GameService {
     // 访问本地数据库
     public List<GameSummary> getWishGames(int offset, int len) {
         WishDao wishDao = getHarmonyDB().wishDao();
-        return wishDao.getByLimit(offset, len);
+        List<GameSummary> gameSummaries = wishDao.getByLimit(offset, len);
+        for (GameSummary g : gameSummaries) {
+            if (g.getUpdateAt() < System.currentTimeMillis() + (1000 * 60 * 24)) {
+                continue;
+            }
+            try {
+                ///g = getGameSummaryByID(g.getId()); 还没有完成
+                g.setUpdateAt(System.currentTimeMillis());
+                wishDao.update(g);
+            } catch (Exception e) {
+                Log.e("GAME_SERIVCE", e.getMessage());
+            }
+        }
+        return gameSummaries;
     }
 
     // 访问本地数据库
     public void addToWishList(GameSummary gameSummary) {
         WishDao wishDao = getHarmonyDB().wishDao();
-        wishDao.insertAll(gameSummary);
+        gameSummary.setUpdateAt(System.currentTimeMillis());
+        if (null == wishDao.findById(gameSummary.getId())){
+            wishDao.insertAll(gameSummary);
+        }
     }
 }

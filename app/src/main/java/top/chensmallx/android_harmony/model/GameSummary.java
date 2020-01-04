@@ -8,7 +8,9 @@ import androidx.room.PrimaryKey;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.sql.Date;
 
 
 @Entity(tableName =  "wishes")
@@ -54,6 +56,11 @@ public class GameSummary {
     private boolean isExclusive;
 
 
+
+    @ColumnInfo(name = "update_at")
+    private long updateAt;
+
+
     public GameSummary(int id, String nameCN, String nameEN, String imgUrl, String region, String priceCNY, String saleRate, int[] languageTag, boolean hasSolidEdition, boolean hasDemo, boolean isExclusive) {
         this.id = id;
         this.nameCN = nameCN;
@@ -81,6 +88,14 @@ public class GameSummary {
         this.hasDemo = hasDemo;
         this.isExclusive = isExclusive;
         this.setLanguageTagString(languageTagString);
+    }
+
+    public long getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(long updateAt) {
+        this.updateAt = updateAt;
     }
 
     public void setLanguageTagString(String languageTagString) {
