@@ -58,24 +58,24 @@ public class GameService {
         return gameHttpService.getGameSummary(id);
     }
     // 首页折扣游戏
-    public List<GameSummary> getOffGame(int offset, int len) {
-        return null;
+    public List<GameSummary> getGameList(int offset, int limit) throws IOException {
+        return gameHttpService.getGameList(offset, limit);
     }
 
     // 访问本地数据库
-    public List<GameSummary> getWishGames(int offset, int len) {
+    public List<GameSummary> getWishGames(int offset, int limit) {
         WishDao wishDao = getHarmonyDB().wishDao();
-        List<GameSummary> gameSummaries = wishDao.getByLimit(offset, len);
+        List<GameSummary> gameSummaries = wishDao.getByLimit(offset, limit);
         for (GameSummary g : gameSummaries) {
             if (System.currentTimeMillis() >= g.getUpdateAt() + (1000 * 60 * 6)) {
                 continue;
             }
             try {
-                ///g = getGameSummaryByID(g.getId()); 还没有完成
+                g = getGameSummaryByID(g.getId());
                 g.setUpdateAt(System.currentTimeMillis());
                 wishDao.update(g);
             } catch (Exception e) {
-                Log.e("GAME_SERIVCE", e.getMessage());
+                Log.e("HARMONY", e.getMessage());
             }
         }
         return gameSummaries;

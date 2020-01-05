@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import top.chensmallx.android_harmony.model.GameDetail;
+import top.chensmallx.android_harmony.model.GameSummartList;
 import top.chensmallx.android_harmony.model.GameSummary;
 
 public class GameHttpService {
@@ -34,11 +36,19 @@ public class GameHttpService {
     }
 
     public GameDetail getGameDetail(int id) throws IOException, JsonParseException {
-        return get(DOMAIN+"/info/detail/"+id, GameDetail.class);
+        return get(DOMAIN+"/game/" + id +"/detail", GameDetail.class);
     }
 
     public GameSummary getGameSummary(int id) throws IOException, JsonParseException {
-        return get(DOMAIN+"/info/summary/"+id, GameSummary.class);
+        return get(DOMAIN+"/game/" + id + "/summary", GameSummary.class);
+    }
+
+    public List<GameSummary> getGameList(int offset, int limit) throws IOException, JsonParseException {
+        GameSummartList gameSummartList = get(DOMAIN + "/game?" +"limit=" + limit + "&" +"offset=" + offset, GameSummartList.class);
+        if (gameSummartList == null) {
+            return null;
+        }
+        return gameSummartList.getGameSummaryList();
     }
 }
 

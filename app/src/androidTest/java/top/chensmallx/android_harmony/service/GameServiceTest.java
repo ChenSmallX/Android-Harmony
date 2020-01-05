@@ -30,10 +30,35 @@ public class GameServiceTest {
             Gson gson = new Gson();
             Log.println(Log.INFO, "T", gson.toJson(detail));
         }catch (Exception e) {
-            e.printStackTrace();
+            Log.println(Log.ERROR, "HARMONY", e.getMessage());
         }
     }
 
+    @Test
+    public void testGetGameSummary() {
+        GameService gameService = new GameService(ApplicationProvider.getApplicationContext());
+        try {
+            GameSummary  summary = gameService.getGameSummaryByID(1);
+            Gson gson = new Gson();
+            Log.println(Log.INFO, "HARMONY", gson.toJson(summary));
+        }catch (Exception e) {
+            Log.println(Log.ERROR, "HARMONY", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGetGames() {
+        GameService gameService = new GameService(ApplicationProvider.getApplicationContext());
+        try {
+            List<GameSummary>  gameSummaries = gameService.getGameList(0,10);
+            for (GameSummary g : gameSummaries) {
+                Gson gson = new Gson();
+                Log.println(Log.INFO, "HARMONY", gson.toJson(g));
+            }
+        }catch (Exception e) {
+            Log.println(Log.ERROR, "HARMONY", e.getMessage());
+        }
+    }
     @Test
     public void testWishes() {
         GameSummary gameSummary = new GameSummary(122,  "xx", "xx", "xx", "xx", "xx" ,"xx" , new int[]{1, 2}, false, false, false);
