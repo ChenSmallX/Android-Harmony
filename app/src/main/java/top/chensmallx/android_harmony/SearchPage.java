@@ -1,10 +1,17 @@
 package top.chensmallx.android_harmony;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ContentProvider;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,26 +19,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,48 +37,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 import top.chensmallx.android_harmony.adapter.EndlessRecyclerViewScrollListener;
-import top.chensmallx.android_harmony.model.GameDetail;
 import top.chensmallx.android_harmony.model.GameSummary;
 import top.chensmallx.android_harmony.service.GameService;
 
-public class FragmentHome extends Fragment {
+public class SearchPage extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private GameService service;
 
-    private int offset = 0;
-    private int limit = 20;
+    SearchView searchView;
+    RecyclerView recyclerView;
 
+    List<GameSummary> testGame;
 
-    private RecyclerView recyclerView;
     GameSumItemAdapter adapter;
-
-    @Nullable
-    public List<GameSummary> testGame = null;
-    public List<GameSummary> all = null;
-
     MyHandler handler;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        service = new GameService(getActivity().getApplicationContext());
-        initData();
-        adapter = new GameSumItemAdapter(testGame);
+        setContentView(R.layout.search_page_activity);
 
+        getSupportActionBar().hide();
+
+        searchView = (SearchView) findViewById(R.id.search_page_search_bar);
+        recyclerView = (RecyclerView) findViewById(R.id.search_recycler_view);
+
+        testGame = new ArrayList<>();
+        service = new GameService(getApplicationContext());
+        adapter = new GameSumItemAdapter(testGame);
         handler = new MyHandler();
+
     }
 
-    @Nullable
-    private void initData() {
-        offset = 0;
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (searchView != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                // 这将让键盘在所有的情况下都被隐藏，但是一般我们在点击搜索按钮后，输入法都会乖乖的自动隐藏的。
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0); // 输入法如果是显示状态，那么就隐藏输入法
+            }
+            searchView.clearFocus(); // 不获取焦点
+        }
+        return true;
+    }
 
+    @Override
+    public boolean onQueryTextChange(final String newText) {
+//        String selection = ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY + " LIKE '%" + newText + "%' " + " OR "
+//                + ContactsContract.RawContacts.SORT_KEY_PRIMARY + " LIKE '%" + newText + "%' ";
+        // String[] selectionArg = { queryText };
+//        mCursor = getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, PROJECTION, selection, null, null);
+//        mAdapter.swapCursor(mCursor); // 交换指针，展示新的数据
         new Thread() {
             @Override
             public void run() {
                 List<GameSummary> list = null;
                 try {
-                    list = service.getGameList(offset, 100);
-                    offset += limit;
+                    list = service.searchGameByName(newText, 0, 100);
                 } catch (IOException e) {
                     Log.e("IOE", e.toString());
                 }
@@ -96,107 +108,15 @@ public class FragmentHome extends Fragment {
             }
         }.start();
 
+
+        return true;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        // 设置recycler view
-        recyclerView = view.findViewById(R.id.recycle_home);
-        if (recyclerView != null) {
-            recyclerView.setHasFixedSize(true);
-            final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()); // final 修饰其被赋值后无法被改变
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
-            final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_home);
-            swipeRefreshLayout.setColorSchemeColors(
-                    ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-                    ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                    ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
-            );
-            swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE); // 进度条颜色
-            swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
-
-            EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-                @Override
-                public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                    new Thread() {
-//                        @Override
-//                        public void run() {
-//                            List<GameSummary> list = null;
-//                            try {
-//                                list = service.getGameList(offset, 100);
-//                                offset += limit;
-//                            } catch (IOException e) {
-//                                Log.e("IOE", e.toString());
-//                            }
-//                            if (list != null) {
-//                                Message message = Message.obtain();
-//                                message.what = MyHandler.UPDATE_DATA;
-//                                message.obj = list;
-//
-//                                handler.sendMessage(message);
-//                            }
-//                        }
-//                    }.start();
-                }
-            };
-            recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
-
-            SearchView searchView = (SearchView) view.findViewById(R.id.home_search_bar);
-            searchView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), SearchPage.class);
-                    startActivity(intent);
-                }
-            });
-
-            // 刷新时候的动作
-            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    offset = 0;
-                                    List<GameSummary> list = null;
-                                    try {
-                                        list = service.getGameList(offset, limit);
-                                    } catch (IOException e) {
-                                        Log.e("IOE", e.toString());
-                                    }
-                                    if (list != null) {
-                                        Message message = Message.obtain();
-                                        message.what = MyHandler.RENEW_DATA;
-                                        message.obj = list;
-
-                                        handler.sendMessage(message);
-                                    }
-                                }
-                            }.start();
-                            recyclerView.scrollToPosition(0);
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                    }, 1000);
-                }
-            });
-        }
-        return view;
-    }
 
     static class GameSumItemAdapter extends RecyclerView.Adapter<GameViewHolder> {
         private List<GameSummary> gameSummaries;
 
-//    private ArrayList<String> mData;
+        //    private ArrayList<String> mData;
         ImgHandler handler;
 
         public GameSumItemAdapter(List<GameSummary> data) {
@@ -288,6 +208,7 @@ public class FragmentHome extends Fragment {
     }
 
 
+
     static class GameViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public int gameId;
@@ -359,7 +280,7 @@ public class FragmentHome extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Log.e("FragmentHome", "==>Game onClick...Item");
+            Log.e("searchPage", "==>Game onClick...Item");
 
             if (gameSummary == null) {
                 return;
@@ -400,17 +321,14 @@ public class FragmentHome extends Fragment {
             switch (msg.what) {
                 case INIT_DATA:
                 case RENEW_DATA:
-                    offset = 0;
 //                    all = (List<GameSummary>) msg.obj;
 //                    testGame = all.subList(offset, limit);
                     testGame = (List<GameSummary>) msg.obj;
-                    offset += offset;
                     adapter.updateData(testGame);
                     adapter.notifyDataSetChanged();
                     break;
                 case UPDATE_DATA:
-                    List<GameSummary> list = all.subList(offset, limit);
-                    offset += limit;
+                    List<GameSummary> list = null;// = all.subList(offset, limit);
 
                     testGame.addAll(list);
                     adapter.updateData(testGame);
@@ -420,7 +338,5 @@ public class FragmentHome extends Fragment {
             }
         }
     }
-
-
 
 }
