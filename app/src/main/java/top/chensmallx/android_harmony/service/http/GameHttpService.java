@@ -35,6 +35,10 @@ public class GameHttpService {
         return gson.fromJson(rsp, classOfT);
     }
 
+    public List<GameSummary> searchByName(String game, int offset, int limit) throws IOException, JsonParseException {
+        return get(DOMAIN + "/game/" + "?" + "limit=" + limit + "&" +"offset=" + offset + "&" + "q=" + game, GameSummartList.class).getGameSummaryList();
+    }
+
     public GameDetail getGameDetail(int id) throws IOException, JsonParseException {
         return get(DOMAIN+"/game/" + id +"/detail", GameDetail.class);
     }
