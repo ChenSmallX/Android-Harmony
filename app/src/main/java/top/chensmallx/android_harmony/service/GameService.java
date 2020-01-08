@@ -45,8 +45,8 @@ public class GameService {
 
 
     // 搜索游戏
-    public List<GameSummary> searchGameByName(String name, int offset, int len) {
-        return null;
+    public List<GameSummary> searchGameByName(String name, int offset, int limit) throws  IOException{
+        return gameHttpService.searchByName(name, offset, limit);
     }
 
     // 获取游戏详情
