@@ -1,9 +1,23 @@
 <resources>
     <string name="app_name">Android-Harmony</string>
+    <string name="app_name_short">And-Har</string>
 
     <string name="tab_home_text">主页</string>
     <string name="tab_me_text">我的</string>
 
     <string name="page_me_title">心愿单</string>
+
+    <string name="game_item_name_chinese">塞尔达传说：荒野之息</string>
+    <string name="game_item_name_english">The Legend of Zelda: Breath of the Wild</string>
+    <string name="game_item_order_date">2017-03-02</string>
+    <string name="game_item_price_ori">417</string>
+    <string name="game_item_price_curr">368</string>
+    <string name="game_item_price_coin">CNY</string>
+
+    <string name="game_detail_intro">曾经一场大灾难袭击了海拉尔王国使之灭亡，海拉尔王国灭亡后的100年后，林克在地下遗迹苏醒，追寻跟着不可思议的声音，开始了新的冒险之旅。</string>
+    <string name="game_detail_introduce">《塞尔达传说 旷野之息》（日语：ゼルダの伝説 ブレス オブ ザ ワイルド，英语：The Legend of Zelda: Breath of the Wild，港台译作“萨尔达传说 旷野之息”，副标题又译作“荒野之息”）是一款动作冒险游戏。本作由任天堂企划制作本部与任天堂旗下子公司 Monolith Soft 协力开发。游戏于2017年3月3日在任天堂Switch与Wii U主机发行。
+本作最初公布于2013年，并计划于2015年作为Wii U独占游戏发行，之后宣布延期，并也将会在任天堂Switch（时称开发代号“NX”）上发行，成为该主机首发游戏之一。同时任天堂确认本作会是本社在Wii U上开发的最后一款游戏。游戏于2018年2月1日在台湾与香港发行实体中文版，在韩国发行实体韩文版，已购入其他版本的玩家也可通过补丁更新获得对繁简中文和韩文的支持。
+《塞尔达传说 旷野之息》在发售后获得了业界的极高评价，多家媒体给予本作满分，并获得多个年度游戏奖项，更获得了2017年游戏大奖的年度游戏奖。
+2019年E3电子娱乐展上，任天堂宣布本作正统续作正在开发。</string>
 
 </resources>

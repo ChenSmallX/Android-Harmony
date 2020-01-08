@@ -5,26 +5,37 @@ import com.google.gson.annotations.SerializedName;
 public class GamePrice {
     @SerializedName(value="Region")
     private String region;
+
     @SerializedName(value="HasChinese")
     private boolean hasChinese;
+
     @SerializedName(value="IsLowestPrice")
     private boolean isLowestPrice;
+
     @SerializedName(value="IsOnSale")
     private boolean isOnSale;
+
     @SerializedName(value="SaleRate")
     private double saleRate;
+
     @SerializedName(value="EndDate")
     private int endDate;
+
     @SerializedName(value="PriceCNY")
     private double priceCNY;
+
     @SerializedName(value="PriceLocal")
     private double priceLocal;
+
     @SerializedName(value="GameLanguage")
     private String[] gameLanguage;
+
     @SerializedName(value="ReleaseDate")
     private String releaseDate;
+
     @SerializedName(value="RegionComment")
     private String regionComment;
+
     @SerializedName(value="HistoryLowestPrice")
     private double historyLowestPrice;
 

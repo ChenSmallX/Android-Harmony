@@ -72,6 +72,22 @@ public class GameServiceTest {
         }
 
     }
+
+    @Test
+    public void searchGame() {
+        GameService gameService = new GameService(ApplicationProvider.getApplicationContext());
+        try {
+            List<GameSummary> results = gameService.searchGameByName("塞尔达", 0, 10);
+            for (int i = 0; i < results.size(); i++) {
+                GameSummary g = results.get(i);
+                Gson gson = new Gson();
+                Log.println(Log.INFO, "HARMONY", gson.toJson(g.getId()));
+            }
+        }catch (Exception e) {
+            Log.println(Log.ERROR, "HARMONY", e.getMessage());
+        }
+
+    }
 }
 
 

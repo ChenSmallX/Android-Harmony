@@ -18,24 +18,31 @@ public class GameSummary {
     @SerializedName(value="ID")
     @PrimaryKey
     private int id;
+
     @SerializedName(value="NameCN")
     @ColumnInfo(name = "name_cn")
     private String nameCN;
+
     @SerializedName(value="NameEN")
     @ColumnInfo(name = "name_en")
     private String nameEN;
+
     @SerializedName(value="ImgUrl")
     @ColumnInfo(name = "img_url")
     private String imgUrl;
+
     @SerializedName(value="Region")
     @ColumnInfo(name = "region")
     private String region;
+
     @SerializedName(value="PriceCNY")
     @ColumnInfo(name = "price_cny")
     private String priceCNY;
+
     @SerializedName(value="SaleRate")
     @ColumnInfo(name = "sale_rate")
     private String saleRate;
+
     @SerializedName(value="LanguageTag")
     @Ignore
     private int[] languageTag;
@@ -48,9 +55,11 @@ public class GameSummary {
     @SerializedName(value="HasSolidEdition")
     @ColumnInfo(name = "has_solid_edition")
     private boolean hasSolidEdition;
+
     @SerializedName(value="HasDemo")
     @ColumnInfo(name = "has_demo")
     private boolean hasDemo;
+
     @SerializedName(value="IsExclusive")
     @ColumnInfo(name = "is_exclusive")
     private boolean isExclusive;

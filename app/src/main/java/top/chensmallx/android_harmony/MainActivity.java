@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         me_tab.setText(R.string.tab_me_text);
 
         // set the tab items' icon
-        home_tab.setIcon(R.mipmap.ic_launcher_round);
-        me_tab.setIcon(R.mipmap.ic_launcher_round);
+//        home_tab.setIcon(R.mipmap.ic_launcher_round);
+//        me_tab.setIcon(R.mipmap.ic_launcher_round);
 
     }
 
