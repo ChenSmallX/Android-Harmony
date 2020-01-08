@@ -5,34 +5,49 @@ import com.google.gson.annotations.SerializedName;
 public class GameDetail {
     @SerializedName(value="ID")
     private int id;
+
     @SerializedName(value="GameNameCN")
     private String gameNameCN;
+
     @SerializedName(value="GameNameEN")
     private String gameNameEN;
+
     @SerializedName(value="GameSize")
     private String gameSize;
+
     @SerializedName(value="ImgUrl")
     private String[] imageUrl;
+
     @SerializedName(value="Price")
     private GamePrice[] price;
+
     @SerializedName(value="LowestPrice")
     private GamePrice lowestPrice;
+
     @SerializedName(value="LanguageTag")
     private int[] languageTag;
+
     @SerializedName(value="HasSolidEdition")
     private boolean hasSolidEdition;
+
     @SerializedName(value="HasDemo")
     private boolean hasDemo;
+
     @SerializedName(value="IsExclusive")
     private boolean isExclusive;
+
     @SerializedName(value="GameTypeTag")
     private String[] gameTypeTag;
+
     @SerializedName(value="HasChinese")
     private boolean hasChinese;
+
     @SerializedName(value="GamePlayers")
     private int gamePlayers;
+
     @SerializedName(value="Description")
     private String description;
+
     @SerializedName(value="GameScore")
     private String[] gameScore;
 

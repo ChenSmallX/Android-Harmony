@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:id="@+id/game_item"
+<androidx.cardview.widget.CardView
+    android:id="@+id/game_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,7 +26,7 @@
             android:layout_height="120dp"
             android:adjustViewBounds="false"
             android:scaleType="centerCrop"
-            android:src="@mipmap/game_cover"/>
+            android:src="@mipmap/logo"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,10 +52,11 @@
                 android:maxLines="1"
                 android:text="@string/game_item_name_english"/>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="bottom|right">
+                android:gravity="left|bottom">
 
                 <TextView
                     android:id="@+id/game_item_price_curr"
@@ -65,29 +67,35 @@
                     android:textColor="@color/colorPrimary"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:text="/" />
-
-                <TextView
                     android:id="@+id/game_item_price_ori"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
                     android:text="@string/game_item_price_ori"
                     android:textColor="@android:color/darker_gray"/>
 
                 <TextView
-                    android:id="@+id/game_item_price_coin"
+                    android:id="@+id/game_item_region"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
-                    android:textColor="@color/colorPrimary"
-                    android:text="@string/game_item_price_coin"
-                    android:textSize="25dp"/>
+                    android:text="(日区)"
+                    android:textColor="@android:color/darker_gray"/>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right">
+
+                    <TextView
+                        android:id="@+id/game_item_sale_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="90%"
+                        android:textSize="25dp"
+                        android:textColor="@color/colorPrimary"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -17,7 +17,7 @@
             android:layout_height="250dp"
             android:adjustViewBounds="false"
             android:scaleType="centerCrop"
-            android:src="@mipmap/game_detail_main_photo"/>
+            android:src="@mipmap/logo"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/game_detail_photo_recycle_list"
