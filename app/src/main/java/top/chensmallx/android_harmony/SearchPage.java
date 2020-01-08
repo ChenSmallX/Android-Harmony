@@ -1,5 +1,6 @@
 package top.chensmallx.android_harmony;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -49,7 +50,7 @@ public class SearchPage extends AppCompatActivity implements SearchView.OnQueryT
 
     List<GameSummary> testGame;
 
-    GameSumItemAdapter adapter;
+    public GameSumItemAdapter adapter;
     MyHandler handler;
 
     @Override
@@ -60,17 +61,48 @@ public class SearchPage extends AppCompatActivity implements SearchView.OnQueryT
         getSupportActionBar().hide();
 
         searchView = (SearchView) findViewById(R.id.search_page_search_bar);
-        recyclerView = (RecyclerView) findViewById(R.id.search_recycler_view);
 
         testGame = new ArrayList<>();
+
+        for (int i = 0; i <= 1; i ++) {
+            GameSummary summary = new GameSummary(
+                    i,
+                    ""+i,
+                    ""+i+i,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    false,
+                    false
+            );
+//            gameService.addToWishList(summary);
+            testGame.add(summary);
+        }
+
+//        gameSummaries = gameService.getWishGames(offset, limit);
+//        offset += limit;
+
         service = new GameService(getApplicationContext());
         adapter = new GameSumItemAdapter(testGame);
         handler = new MyHandler();
 
+        recyclerView = (RecyclerView) findViewById(R.id.search_recycler_view);
+        if (recyclerView != null) {
+            recyclerView.setHasFixedSize(true);
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+        recyclerView.setAdapter(adapter);
+
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public boolean onQueryTextSubmit(final String query) {
+        Log.e("onQueryTextSubmit", query);
         if (searchView != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
@@ -79,6 +111,25 @@ public class SearchPage extends AppCompatActivity implements SearchView.OnQueryT
             }
             searchView.clearFocus(); // 不获取焦点
         }
+        new Thread() {
+            @Override
+            public void run() {
+                List<GameSummary> list = null;
+                try {
+                    list = service.searchGameByName(query, 0, 100);
+                } catch (IOException e) {
+                    Log.e("IOE", e.toString());
+                }
+                if (list != null) {
+                    Message message = Message.obtain();
+                    message.what = MyHandler.UPDATE_DATA;
+                    message.obj = list;
+
+                    handler.sendMessage(message);
+                }
+            }
+        }.start();
+
         return true;
     }
 
@@ -89,6 +140,7 @@ public class SearchPage extends AppCompatActivity implements SearchView.OnQueryT
         // String[] selectionArg = { queryText };
 //        mCursor = getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, PROJECTION, selection, null, null);
 //        mAdapter.swapCursor(mCursor); // 交换指针，展示新的数据
+        Log.e("onQueryTextChange", newText);
         new Thread() {
             @Override
             public void run() {
@@ -100,7 +152,7 @@ public class SearchPage extends AppCompatActivity implements SearchView.OnQueryT
                 }
                 if (list != null) {
                     Message message = Message.obtain();
-                    message.what = MyHandler.INIT_DATA;
+                    message.what = MyHandler.UPDATE_DATA;
                     message.obj = list;
 
                     handler.sendMessage(message);
@@ -321,16 +373,8 @@ public class SearchPage extends AppCompatActivity implements SearchView.OnQueryT
             switch (msg.what) {
                 case INIT_DATA:
                 case RENEW_DATA:
-//                    all = (List<GameSummary>) msg.obj;
-//                    testGame = all.subList(offset, limit);
-                    testGame = (List<GameSummary>) msg.obj;
-                    adapter.updateData(testGame);
-                    adapter.notifyDataSetChanged();
-                    break;
                 case UPDATE_DATA:
-                    List<GameSummary> list = null;// = all.subList(offset, limit);
-
-                    testGame.addAll(list);
+                    testGame = (List<GameSummary>) msg.obj;
                     adapter.updateData(testGame);
                     adapter.notifyDataSetChanged();
                     break;
