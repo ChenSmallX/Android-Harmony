@@ -63,8 +63,40 @@ public class FragmentMe extends Fragment {
 
     private void initData() {
         offset = 0;
-        gameSummaries = gameService.getWishGames(offset, limit);
-        offset += limit;
+//        gameSummaries = new ArrayList<>();
+//
+//        for (int i = 0; i <= 1; i ++) {
+//            GameSummary summary = new GameSummary(
+//                    i,
+//                    ""+i,
+//                    ""+i+i,
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    false,
+//                    false,
+//                    false
+//            );
+//            gameSummaries.add(summary);
+//        }
+        new Thread() {
+            @Override
+            public void run() {
+                List<GameSummary> list = null;
+                    list = gameService.getWishGames(offset, limit);
+                    offset += limit;
+                if (list != null) {
+                    Message message = Message.obtain();
+                    message.what = MyHandler.INIT_DATA;
+                    message.obj = list;
+
+                    handler.sendMessage(message);
+                }
+            }
+        }.start();
+
 
     }
 
@@ -113,8 +145,6 @@ public class FragmentMe extends Fragment {
                                     }
                                 }
                             }.start();
-                            adapter.updateData(gameSummaries);
-                            adapter.notifyDataSetChanged();
                             recyclerView.scrollToPosition(0);
                             swipeRefreshLayout.setRefreshing(false);
                         }
@@ -126,14 +156,20 @@ public class FragmentMe extends Fragment {
         return view;
     }
 
+
+
+
+
+
     static class GameSumItemAdapter extends RecyclerView.Adapter<GameViewHolder> {
         private List<GameSummary> gameSummaries;
 
 
 //    private ArrayList<String> mData;
-        ImgHandler handler;
+        ImgHandler imgHandler;
 
         public GameSumItemAdapter(List<GameSummary> data) {
+            imgHandler = new ImgHandler();
             this.gameSummaries = data;
         }
 
@@ -160,9 +196,9 @@ public class FragmentMe extends Fragment {
             holder.gameId = gameSummaries.get(position).getId();
             holder.gameItemNameChineseView.setText(gameSummaries.get(position).getNameCN());
             holder.gameItemNameEnglishView.setText(gameSummaries.get(position).getNameEN());
-            holder.gameItemPriceCurrView.setText(gameSummaries.get(position).getPriceCNY());
+            holder.gameItemPriceCurrView.setText(gameSummaries.get(position).getPriceCNY()+"CNY");
             holder.gameItemRegionView.setText(gameSummaries.get(position).getRegion());
-            holder.gameItemSaleRateView.setText(gameSummaries.get(position).getSaleRate());
+            holder.gameItemSaleRateView.setText(gameSummaries.get(position).getSaleRate()+"%");
             holder.imageUrl = gameSummaries.get(position).getImgUrl();
             imageView = holder.gameItemCover;
 
@@ -188,7 +224,7 @@ public class FragmentMe extends Fragment {
                             Message msg = Message.obtain();
                             msg.obj = bitmap;
                             msg.what = FragmentHome.GameSumItemAdapter.ImgHandler.GET_IMAGE_SUC;
-                            handler.sendMessage(msg);
+                            imgHandler.sendMessage(msg);
                             inputStream.close();
                         }
                     } catch (IOException e) {
@@ -312,12 +348,12 @@ public class FragmentMe extends Fragment {
 
             Context context = view.getContext();
             if (context == null) return;
-            Intent intent = new Intent(context, GameDetail.class);
+            Intent intent = new Intent(context, GameDetailActivity.class);
             intent.putExtra("gameId", gameId);
+            intent.putExtra("gameName", gameSummary.getNameCN());
 
             if (context instanceof Activity) {
                 Activity activity = (Activity) context;
-
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, gameItemCover, "cover").toBundle();
                 ActivityCompat.startActivity(activity, intent, bundle);
             }

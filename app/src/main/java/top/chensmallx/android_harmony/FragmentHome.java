@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -158,7 +159,6 @@ public class FragmentHome extends Fragment {
     static class GameSumItemAdapter extends RecyclerView.Adapter<GameViewHolder> {
         private List<GameSummary> gameSummaries;
 
-
 //    private ArrayList<String> mData;
         ImgHandler handler;
 
@@ -190,9 +190,9 @@ public class FragmentHome extends Fragment {
             holder.gameId = gameSummaries.get(position).getId();
             holder.gameItemNameChineseView.setText(gameSummaries.get(position).getNameCN());
             holder.gameItemNameEnglishView.setText(gameSummaries.get(position).getNameEN());
-            holder.gameItemPriceCurrView.setText(gameSummaries.get(position).getPriceCNY());
+            holder.gameItemPriceCurrView.setText(gameSummaries.get(position).getPriceCNY()+"CNY");
             holder.gameItemRegionView.setText(gameSummaries.get(position).getRegion());
-            holder.gameItemSaleRateView.setText(gameSummaries.get(position).getSaleRate());
+            holder.gameItemSaleRateView.setText(gameSummaries.get(position).getSaleRate()+"%");
             holder.imageUrl = gameSummaries.get(position).getImgUrl();
             imageView = holder.gameItemCover;
 
@@ -249,11 +249,6 @@ public class FragmentHome extends Fragment {
         }
 
     }
-
-
-
-
-
 
 
     static class GameViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -319,9 +314,9 @@ public class FragmentHome extends Fragment {
             imageUrl = summary.getImgUrl();
             gameItemNameChineseView.setText(summary.getNameCN());
             gameItemNameEnglishView.setText(summary.getNameEN());
-            gameItemPriceCurrView.setText(summary.getPriceCNY());
+            gameItemPriceCurrView.setText(summary.getPriceCNY()+" CNY");
             gameItemRegionView.setText(summary.getRegion());
-            gameItemSaleRateView.setText(summary.getSaleRate());
+            gameItemSaleRateView.setText(summary.getSaleRate()+"%");
 
         }
 
@@ -342,6 +337,7 @@ public class FragmentHome extends Fragment {
             }
             Intent intent = new Intent(context, GameDetailActivity.class);
             intent.putExtra("gameId", gameId);
+            intent.putExtra("gameName", gameSummary.getNameCN());
 
 
             if (context instanceof Activity) {
@@ -386,4 +382,7 @@ public class FragmentHome extends Fragment {
             }
         }
     }
+
+
+
 }
